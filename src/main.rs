@@ -48,11 +48,8 @@ impl Solutions {
 
             if let Some(closing_bracket) = closing_brackets.get(&char) {
                 match (stack.last(), map.get(closing_bracket)) {
-                    (Some(last_char), Some(open_bracket)) if open_bracket == last_char => {
+                    (Some(last_char), Some(opening_bracket)) if opening_bracket == last_char => {
                         stack.pop();
-                    }
-                    (Some(last_char), Some(open_bracket)) if open_bracket != last_char => {
-                        return false;
                     }
                     _ => return false,
                 }
