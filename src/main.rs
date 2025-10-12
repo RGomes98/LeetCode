@@ -1,11 +1,11 @@
 pub struct Solutions {
-    pub longest_common_prefix: fn(strs: Vec<String>) -> String,
+    pub longest_common_prefix: fn(strs: &[String]) -> String,
 }
 
 impl Solutions {
-    pub fn longest_common_prefix(strs: Vec<String>) -> String {
-        let prefix_len: usize = strs.first().map(|s| s.len()).unwrap_or(0) + 1;
-        let mut result = "";
+    pub fn longest_common_prefix<'a>(strs: &'a [String]) -> String {
+        let prefix_len: usize = strs.first().unwrap_or(&String::new()).len() + 1;
+        let mut result: &'a str = "";
 
         for i in 1..prefix_len {
             let mut is_valid: bool = true;
@@ -34,7 +34,7 @@ impl Solutions {
 }
 
 fn main() {
-    let longest_common_prefix: String = Solutions::longest_common_prefix(vec![
+    let longest_common_prefix: String = Solutions::longest_common_prefix(&[
         "flower".to_string(),
         "flow".to_string(),
         "flight".to_string(),
