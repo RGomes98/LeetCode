@@ -1,5 +1,8 @@
+use std::collections::{HashMap, HashSet};
+
 pub struct Solutions {
     pub longest_common_prefix: fn(strs: &[String]) -> String,
+    pub valid_parentheses: fn(s: String) -> bool,
 }
 
 impl Solutions {
@@ -18,7 +21,7 @@ impl Solutions {
                     Some(s) if j == 0 => curr = s,
                     Some(s) if curr != s => is_valid = false,
                     None => is_valid = false,
-                    Some(_) => {}
+                    _ => {}
                 }
             }
 
@@ -31,14 +34,41 @@ impl Solutions {
 
         result.to_string()
     }
+
+    pub fn valid_parentheses(str: String) -> bool {
+        let map: HashMap<char, char> = HashMap::from([('}', '{'), (')', '('), (']', '[')]);
+        let opening_brackets: HashSet<&char> = map.values().collect::<HashSet<&char>>();
+        let closing_brackets: HashSet<&char> = map.keys().collect::<HashSet<&char>>();
+        let mut stack: Vec<char> = vec![];
+
+        for char in str.chars() {
+            if let Some(opening_bracket) = opening_brackets.get(&char) {
+                stack.push(**opening_bracket);
+            }
+
+            if let Some(closing_bracket) = closing_brackets.get(&char) {
+                match (stack.last(), map.get(closing_bracket)) {
+                    (Some(last_char), Some(open_bracket)) if open_bracket == last_char => {
+                        stack.pop();
+                    }
+                    (Some(last_char), Some(open_bracket)) if open_bracket != last_char => {
+                        return false;
+                    }
+                    _ => return false,
+                }
+            }
+        }
+
+        stack.is_empty()
+    }
 }
 
 fn main() {
-    let longest_common_prefix: String = Solutions::longest_common_prefix(&[
-        "flower".to_string(),
-        "flow".to_string(),
-        "flight".to_string(),
-    ]);
+    let strs: &[String; 3] = &["flower", "flow", "flight"].map(|str: &'static str| str.to_string());
+    let longest_common_prefix: String = Solutions::longest_common_prefix(strs);
+    assert!(longest_common_prefix == "fl");
 
-    assert!(longest_common_prefix == "fl")
+    let str: String = "([])".to_string();
+    let valid_parentheses: bool = Solutions::valid_parentheses(str);
+    assert!(valid_parentheses);
 }
