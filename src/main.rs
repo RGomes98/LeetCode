@@ -89,6 +89,6 @@ fn main() {
     let valid_parentheses: bool = Solutions::valid_parentheses("([])".to_string());
     assert!(valid_parentheses);
 
-    let valid_parentheses: i32 = Solutions::search_insert(vec![1, 3, 5, 6], 5);
-    assert!(valid_parentheses == 2);
+    let search_insert: i32 = Solutions::search_insert(vec![1, 3, 5, 6], 5);
+    assert!(search_insert == 2);
 }
