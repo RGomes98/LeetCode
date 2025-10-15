@@ -3,6 +3,7 @@ use std::collections::{HashMap, HashSet};
 pub struct Solutions {
     pub longest_common_prefix: fn(strs: &[String]) -> String,
     pub valid_parentheses: fn(s: String) -> bool,
+    pub search_insert: fn(nums: Vec<i32>, target: i32) -> i32,
 }
 
 impl Solutions {
@@ -58,6 +59,26 @@ impl Solutions {
 
         stack.is_empty()
     }
+
+    pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
+        let mut left: i32 = 0;
+        let mut right: i32 = (nums.len() - 1) as i32;
+
+        while left <= right {
+            let middle: i32 = left + (right - left) / 2;
+            let value: i32 = nums[middle as usize];
+
+            if value < target {
+                left = middle + 1;
+            } else if value > target {
+                right = middle - 1;
+            } else {
+                return middle;
+            }
+        }
+
+        left
+    }
 }
 
 fn main() {
@@ -65,7 +86,9 @@ fn main() {
     let longest_common_prefix: String = Solutions::longest_common_prefix(strs);
     assert!(longest_common_prefix == "fl");
 
-    let str: String = "([])".to_string();
-    let valid_parentheses: bool = Solutions::valid_parentheses(str);
+    let valid_parentheses: bool = Solutions::valid_parentheses("([])".to_string());
     assert!(valid_parentheses);
+
+    let valid_parentheses: i32 = Solutions::search_insert(vec![1, 3, 5, 6], 5);
+    assert!(valid_parentheses == 2);
 }
